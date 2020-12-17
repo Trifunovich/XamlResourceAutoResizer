@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
@@ -13,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using XamlResourceAutoResizer.Helpers;
 using XamlResourceAutoResizer.Properties;
 using XamlResourceAutoResizer.ViewModel;
 
@@ -24,6 +26,8 @@ namespace XamlResourceAutoResizer
   public partial class MainWindow : Window
   {
     private readonly MainWindowViewModel _dc = new MainWindowViewModel();
+
+    public ObservableCollection<IResourceDisplayModel> Results = new ObservableCollection<IResourceDisplayModel>();
 
     public MainWindow()
     {
@@ -44,7 +48,8 @@ namespace XamlResourceAutoResizer
 
     private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
     {
-      _dc.PopulateResults(PathTb.Text, false);
+      Results = new ObservableCollection<IResourceDisplayModel>(_dc.PopulateResults(PathTb.Text, false));
+      ListBox.ItemsSource = Results;
     }
   }
 }

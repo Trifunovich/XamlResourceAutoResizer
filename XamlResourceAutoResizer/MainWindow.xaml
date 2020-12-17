@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:XamlResourceAutoResizer"
+        xmlns:generic="clr-namespace:System.Collections.Generic;assembly=System.Runtime"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
   <Grid>
@@ -19,7 +20,29 @@
       </Grid.RowDefinitions>
       <Label Content="Path to the xaml file:"></Label>
       <TextBox Grid.Row="1" x:Name="PathTb"></TextBox>
-      <TextBox Grid.Row="2" x:Name="ResultTb"></TextBox>
+      <DataGrid Grid.Row="2"
+                AutoGenerateColumns="False"
+                VerticalScrollBarVisibility="Auto"
+                x:Name="ListBox">
+        <DataGrid.Columns>
+          <DataGridTextColumn Binding="{Binding Key}" Header="Key"></DataGridTextColumn>
+          <DataGridTextColumn Binding="{Binding Value}" Header="Value"></DataGridTextColumn>
+          <DataGridTextColumn Binding="{Binding FMSKeyMatch}" Header="FMSKeyMatch"></DataGridTextColumn>
+          <DataGridTextColumn Binding="{Binding  File}" Header=" File"></DataGridTextColumn>
+        </DataGrid.Columns>
+        <DataGrid.RowStyle>
+          <Style TargetType="DataGridRow" BasedOn="{StaticResource {x:Type DataGridRow}}">
+            <Style.Triggers>
+              <DataTrigger Binding="{Binding Ignore}" Value="True">
+                <Setter Property="Foreground" Value="DeepPink"></Setter>
+              </DataTrigger>
+              <DataTrigger Binding="{Binding IsMissingKey}" Value="True">
+                <Setter Property="Background" Value="LightCyan"></Setter>
+              </DataTrigger>
+            </Style.Triggers>
+          </Style>
+        </DataGrid.RowStyle>
+      </DataGrid>
     </Grid>
     <Grid Grid.Column="1">
       <Grid.RowDefinitions>
@@ -27,7 +50,7 @@
         <RowDefinition></RowDefinition>
       </Grid.RowDefinitions>
       <Button Click="ButtonBase_OnClick">Create resources</Button>
-      <ListBox Grid.Row="1"></ListBox>
+      <TextBox Grid.Row="1" x:Name="ResultTb"></TextBox>
     </Grid>
   
   </Grid>
